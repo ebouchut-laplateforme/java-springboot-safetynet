@@ -53,10 +53,10 @@ and metrics are functional.
 - [ ] **Maven** is functional:
     - [ ] Maven **runs unit tests** 
     - [ ] Maven **runs code coverage**.
-- [ } All URL endpoints and all additional features are covered
+- [ ] All URL endpoints and all additional features are covered
 by **unit tests**.
 - [ ] Compilation generates a **Surefire test report on** JUnit **test results**.
-- [ ] The build includes a **JaCoCo coverage report¨ and achieves **80% code coverage**.
+- [ ] The build includes a **JaCoCo coverage report** and achieves **80% code coverage**.
 
 
 ## Architecture
