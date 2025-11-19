@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
  * <p>
  * The "primary key" of a Person is their full name,
  * that is the combination of their <code>fistName</code> and <code>lastName</code>.
- * The unicity of a <code>Person</code> is solely based on these 2 fields.
+ * The <b>unicity</b> of a <code>Person</code> is solely based on these 2 fields.
  *
  * @see com.ericbouchut.springboot.safetynet.config.SafetynetConfiguration#data(DataLoader)
  * @see com.ericbouchut.springboot.safetynet.model.Data
