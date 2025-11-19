@@ -1,5 +1,6 @@
 package com.ericbouchut.springboot.safetynet.data;
 
+import com.ericbouchut.springboot.safetynet.exception.JsonConfigurationLoadException;
 import com.ericbouchut.springboot.safetynet.model.Data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,4 +43,18 @@ public class DataLoaderTest {
         assertNotNull(data.getMedicalRecords());
         assertEquals(23, data.getMedicalRecords().size());
     }
+
+    @Test
+    public void load_nonExistentJsonFile() {
+        Resource nonExistentDataFileResource  = new ClassPathResource("non_existent.json");
+
+        DataLoader dataLoader = new DataLoader(
+                objectMapper,
+                nonExistentDataFileResource
+        );
+
+        assertThrows(JsonConfigurationLoadException.class, dataLoader::load);
+    }
+
+
 }

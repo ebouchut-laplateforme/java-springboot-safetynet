@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 // TODO: Rename this class and update accordingly the name node in pom.xml
 @SpringBootApplication
-public class JavaSpringbootSafetynetApplication {
+public class SafetynetApplication {
     public static void main(String[] args) {
-        SpringApplication.run(JavaSpringbootSafetynetApplication.class, args);
+        SpringApplication.run(SafetynetApplication.class, args);
     }
 
 }

@@ -11,8 +11,8 @@
     <groupId>com.ericbouchut.springboot</groupId>
     <artifactId>safetynet</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>java-springboot-safetynet</name>
-    <description>java-springboot-safetynet</description>
+    <name>safetynet</name>
+    <description>A emergency alerting application (in Spring Boot) that exposes REST endpoints</description>
     <url/>
     <licenses>
         <license/>

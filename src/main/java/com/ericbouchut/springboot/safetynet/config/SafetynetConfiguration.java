@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
-public class JavaSpringBootSafetynetConfiguration {
+public class SafetynetConfiguration {
 
     /**
      * ObjectMapper cannot deserialize dates by default.
