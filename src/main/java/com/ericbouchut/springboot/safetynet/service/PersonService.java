@@ -6,6 +6,9 @@ import com.ericbouchut.springboot.safetynet.repository.FireStationRepository;
 import com.ericbouchut.springboot.safetynet.repository.PersonRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -14,14 +17,18 @@ import java.util.stream.Collectors;
 public class PersonService {
     private final PersonRepository personRepository;
     private final FireStationRepository fireStationRepository;
+    private final Clock clock;
 
     public PersonService(
             PersonRepository personRepository,
-            FireStationRepository fireStationRepository
+            FireStationRepository fireStationRepository,
+            Clock clock
     ) {
         this.personRepository = personRepository;
         this.fireStationRepository = fireStationRepository;
+        this.clock = clock;
     }
+
 
     public Set<Person> getAllPersons() {
         return personRepository.getAllPersons();
@@ -40,11 +47,11 @@ public class PersonService {
     }
 
     /**
-     * Return a <code>List</code> (not a <code>Set</code>
-     * of phone numbers, because several persons
-     * can share the same number.
+     * Return a unmodifiable <code>List</code> (not a <code>Set</code>) of phone numbers,
+     * because several persons can share the same phone number.
+     * We can have duplicate phone numbers.
      * <br/>
-     * Several fire stations can share the same station number.
+     * Important: Several fire stations can share the same station number.
      *
      * @param fireStationNumber the number of a fire station
      * @return a list of inhabitant phone numbers that are served by fire stations sharing the same number.
@@ -61,5 +68,23 @@ public class PersonService {
                 .map(Person::getPhone)
                 .distinct()
                 .toList();
+    }
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //  Helper Methods
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    /**
+     * Return the age of a person based on their date of birth.
+     * <p>
+     * This method uses {@link #clock} to allow {@link PersonServiceTest}
+     *
+     * @param birthDate the date of birth
+     * @return the age
+     *
+     * @see com.ericbouchut.springboot.safetynet.config.SafetynetConfiguration#clock()
+     */
+    public int calculateAge(LocalDate birthDate) {
+        return Period.between(birthDate, LocalDate.now(clock)).getYears();
     }
 }
