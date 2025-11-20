@@ -73,6 +73,8 @@ The code base adheres to **SOLID principles**:
 
 ## REST Endpoints
 
+### CUD Endpoints
+
 - http://localhost:8080/person  
   This endpoint will allow you to perform the following actions via `POST`/`PUT`/`DELETE` HTTP requests:  
     - **Add** a new person;
@@ -99,7 +101,9 @@ The code base adheres to **SOLID principles**:
     (use a combination of first and last name as a unique identifier).
 
 
-## Generated Files
+## Custom Finders Endpoints
+
+These endpoints will add the missing `R` in CRUD.
 
 *SafetyNet Alerts* must have endpoints that provide information about their status.  
 When your application reads the data file containing names and addresses, 

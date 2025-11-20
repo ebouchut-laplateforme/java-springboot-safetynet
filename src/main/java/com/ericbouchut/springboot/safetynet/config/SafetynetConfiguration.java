@@ -10,7 +10,16 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.Clock;
 
-
+/**
+ * This class contains instance methods annotated with <code>@Bean</code>
+ * that return an instance of a class requiring a custom configuration.
+ * <p>
+ * When Spring Boot cannot find how to instantiate an Object in classes annotated with
+ * (<code>@Component</code>, <code>@Service</code>, <code>@Entity</code>, <code>@Repository</code>)
+ * it searches in all <code>@Configuration</code> classes for
+ * and calls the instance method annotated with <code>@Bean</code>
+ * that returns this type.
+ */
 @Configuration
 public class SafetynetConfiguration {
 
