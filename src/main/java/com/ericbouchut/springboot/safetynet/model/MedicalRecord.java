@@ -18,7 +18,7 @@ public class MedicalRecord {
 
     @JsonFormat(pattern = "MM/dd/yyyy")
     @JsonProperty("birthdate") // Custom JSON field name
-    private LocalDate birthDate;
+    private LocalDate dateOfBirth;
 
     private Set<String> medications;
     private Set<String> allergies;

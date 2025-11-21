@@ -1,5 +1,6 @@
 package com.ericbouchut.springboot.safetynet.service;
 
+import com.ericbouchut.springboot.safetynet.dto.PersonInfoDTO;
 import com.ericbouchut.springboot.safetynet.model.FireStation;
 import com.ericbouchut.springboot.safetynet.model.Person;
 import com.ericbouchut.springboot.safetynet.repository.FireStationRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,6 +31,8 @@ public class PersonService {
         this.clock = clock;
     }
 
+    //  CRUD methods
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     public Set<Person> getAllPersons() {
         return personRepository.getAllPersons();
@@ -41,6 +45,10 @@ public class PersonService {
     public boolean deletePerson(Person person) {
         return personRepository.deletePerson(person);
     }
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Custom Finder Methods
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     public List<String> getCityEmails(String city) {
         return personRepository.getEmailsByCity(city);
@@ -70,21 +78,8 @@ public class PersonService {
                 .toList();
     }
 
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    //  Helper Methods
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    /**
-     * Return the age of a person based on their date of birth.
-     * <p>
-     * This method uses {@link #clock} to allow {@link PersonServiceTest}
-     *
-     * @param birthDate the date of birth
-     * @return the age
-     *
-     * @see com.ericbouchut.springboot.safetynet.config.SafetynetConfiguration#clock()
-     */
-    public int calculateAge(LocalDate birthDate) {
-        return Period.between(birthDate, LocalDate.now(clock)).getYears();
+    public List<PersonInfoDTO> getPersonInfo(String firstName, String lastName) {
+        return Collections.emptyList();
     }
+
 }

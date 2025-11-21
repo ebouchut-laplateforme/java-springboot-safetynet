@@ -1,11 +1,11 @@
 package com.ericbouchut.springboot.safetynet.controller;
 
+import com.ericbouchut.springboot.safetynet.dto.PersonInfoDTO;
 import com.ericbouchut.springboot.safetynet.model.Person;
 import com.ericbouchut.springboot.safetynet.service.PersonService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -56,6 +56,10 @@ public class PersonController {
         return ResponseEntity.notFound().build();
     }
 
+    // ~~~~~~~~~~~~~~~~~~~~~~
+    //  Custom Finder Methods
+    // ~~~~~~~~~~~~~~~~~~~~~~
+
     /**
      * Return the e-mails of people living in a city.
      *
@@ -79,5 +83,18 @@ public class PersonController {
             @RequestParam("firestation") Integer fireStationNumber
     ) {
         return personService.getPhoneNumbersByFireStation(fireStationNumber);
+    }
+
+    /**
+     * If several people have the same name, they must all appear.
+     *
+     * @return the name, address, age, email, and medical history (medications, dosage, allergies) of each resident.
+     */
+    @GetMapping("/personInfo")
+    public List<PersonInfoDTO> getPersonInfo(
+            @RequestParam String firstName,
+            @RequestParam String lastName
+    ) {
+        return personService.getPersonInfo(firstName, lastName);
     }
 }
