@@ -11,9 +11,16 @@ import lombok.NoArgsConstructor;
  * Instances of this class deserialized (read and instantiated) from a JSON file.
  * No JPA, nor database storage involved.
  * <p>
- * The "primary key" of a Person is their full name,
- * that is the combination of their <code>fistName</code> and <code>lastName</code>.
- * The <b>unicity</b> of a <code>Person</code> is solely based on these 2 fields.
+ * The "primary key" of a Person is composed of the following fields:
+ * <ul>
+ *   </li><code>fistName</code></li>
+ *   <li><code>lastName</code></li>
+ *   <li><code>address</code></li>
+ *   <li><code>city</code></li>
+ *   <li><code>zip</code></li>
+ * </ul>
+ * The <b>unicity</b> of a <code>Person</code>
+ * is solely based on the above fields.
  *
  * @see com.ericbouchut.springboot.safetynet.config.SafetynetConfiguration#data(DataLoader)
  * @see com.ericbouchut.springboot.safetynet.model.Data
@@ -29,9 +36,15 @@ public class Person {
     @EqualsAndHashCode.Include
     private String lastName;
 
+    @EqualsAndHashCode.Include
     private String address;
+
+    @EqualsAndHashCode.Include
     private String city;
+
+    @EqualsAndHashCode.Include
     private String zip;
+
     private String phone;
     private String email;
 }
