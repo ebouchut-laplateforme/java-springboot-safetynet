@@ -62,4 +62,14 @@ public class PersonRepository {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * @return a set of persons with the same full name (i.e., first and last name)
+     */
+    public Set<Person> getPersonsByFirstNameAndLastName(String firstName, String lastName) {
+        return data.getPersons()
+                .stream()
+                .filter(p -> p.getLastName().equals(lastName) && p.getFirstName().equals(firstName))
+                .collect(Collectors.toSet());
+    }
+
 }

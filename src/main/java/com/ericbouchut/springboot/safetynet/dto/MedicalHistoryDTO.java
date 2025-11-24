@@ -1,18 +1,32 @@
 package com.ericbouchut.springboot.safetynet.dto;
 
-import lombok.AllArgsConstructor;
+import com.ericbouchut.springboot.safetynet.model.MedicalRecord;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.util.ObjectUtils;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Medical history (medications, dosage, allergies) of a resident (<code>Person</code>).
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class MedicalHistoryDTO {
-    List<String> medications;
-    List<String> allergies;
+    List<MedicationDTO> medications;
+    Set<String> allergies;
+
+    public MedicalHistoryDTO() {
+        medications = Collections.emptyList();
+        allergies = Collections.emptySet();
+    }
+
+    public MedicalHistoryDTO(MedicalRecord medicalRecord) {
+        medications = medicalRecord.getMedications()
+                .stream()
+                .filter(medication -> !ObjectUtils.isEmpty(medication))
+                //.map(m -> new MedicationDTO(m))
+                .map(MedicationDTO::new)
+                .toList();
+
+        allergies = medicalRecord.getAllergies();
+    }
 }

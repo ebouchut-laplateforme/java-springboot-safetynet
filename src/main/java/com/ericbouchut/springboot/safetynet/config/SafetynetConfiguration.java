@@ -62,17 +62,5 @@ public class SafetynetConfiguration {
     public Data data(DataLoader dataLoader) {
         return dataLoader.load();
     }
-
-    /**
-     * The only goal of this bean provider method is to
-     * allow tests to use a different <code>Clock</code>
-     * for instance to set a <b>fixed</b> current date and time.
-     *
-     * @return the default Clock for the current timezone.
-     */
-    @Bean
-    public Clock clock() {
-        return Clock.systemDefaultZone();
-    }
 }
 

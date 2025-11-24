@@ -86,7 +86,7 @@ public class PersonController {
     }
 
     /**
-     * If several people have the same name, they must all appear.
+     * If several people have the same (last?) name, they must all appear.
      *
      * @return the name, address, age, email, and medical history (medications, dosage, allergies) of each resident.
      */

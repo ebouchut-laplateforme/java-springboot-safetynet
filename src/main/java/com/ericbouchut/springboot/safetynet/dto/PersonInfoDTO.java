@@ -6,7 +6,6 @@ import com.ericbouchut.springboot.safetynet.util.DateUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -20,22 +19,39 @@ public class PersonInfoDTO {
     private String fullName;
 
     private String address;
+
+    /**
+     * The age is a virtual attribute calculated from the date of birth.
+     * It is <b>serialized</b> (written to JSON)
+     * but <b>NOT deserialized</b> (read from JSON).
+     */
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private int age;
+
     private String email;
 
-    @JsonProperty("medical_history")
+    @JsonProperty("medical_history") // Use this custom field name for JSON (de)serialization
     private MedicalHistoryDTO medicalHistory;
 
-    private List<String> allergies;
+    public PersonInfoDTO(Person person, List<MedicalRecord> medicalRecords) {
+        fullName = person.getFirstName() + " " + person.getLastName();
+        address  = person.getAddress();
+        email    = person.getEmail();
 
-    private final DateUtils dateUtils;
-
-    public PersonInfoDTO(Person person, MedicalRecord medicalRecord, DateUtils dateUtils) {
-        this.dateUtils = dateUtils;
-
-        this.fullName = person.getFirstName() + " " + person.getLastName();
-        this.address  = person.getAddress();
-        this.age = dateUtils.calculateAge(medicalRecord.getDateOfBirth());
-        this.email = person.getEmail();
+        medicalRecords.stream()
+                // Keep the first medical record and discard the rest
+                .findFirst()
+                .ifPresentOrElse(
+                m -> {
+                        // There is at least one medical record
+                        age = DateUtils.calculateAge(m.getDateOfBirth());
+                        medicalHistory = new MedicalHistoryDTO(m);
+                    },
+                    () -> {
+                        // No associated medical record
+                        age = -1;
+                        medicalHistory = new MedicalHistoryDTO();
+                    }
+                );
     }
 }

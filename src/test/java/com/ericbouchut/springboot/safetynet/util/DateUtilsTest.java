@@ -12,9 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DateUtilsTest {
 
-    /**
-     * @see com.ericbouchut.springboot.safetynet.config.SafetynetConfiguration#clock()
-     */
     @Test
     void calculateAge() {
         // Fix the current date returned by LocalDate.now() to 2025-11-20
@@ -22,12 +19,11 @@ class DateUtilsTest {
                 Instant.parse("2025-11-20T00:00:00Z"),
                 ZoneId.systemDefault()
         );
-        DateUtils dateUtils = new DateUtils(fixedClock);
 
         LocalDate dateOfBirth = LocalDate.of(1900, 11, 20);
-        assertEquals(125, dateUtils.calculateAge(dateOfBirth));
+        assertEquals(125, DateUtils.calculateAge(dateOfBirth, fixedClock));
 
         dateOfBirth = LocalDate.of(1900, 11, 21);
-        assertEquals(124, dateUtils.calculateAge(dateOfBirth));
+        assertEquals(124, DateUtils.calculateAge(dateOfBirth, fixedClock));
     }
 }

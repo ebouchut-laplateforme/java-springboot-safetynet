@@ -5,37 +5,35 @@ import org.springframework.util.StringUtils;
 
 import java.util.Objects;
 
-// TODO: Remove? Not needed so far.
 @Data
 public class MedicationDTO {
-    // TODO: Refactor: Move to a dedicated Helper class that contains constants
+    // TODO: Refactor: Move to a dedicated final Constants class
     private static String MEDICATION_DOSAGE_SEPARATOR = ":";
 
     private String name;
     private String dosage;
 
     /**
-     * Build a <code>MedicationDTO</code> from a String.
+     * Build from a String with the format <code>"medicationName:MedicationDosage"</code>,
+     * such as <code>"tetracyclaz:650mg"</code>.
      *
-     * @param medicationNameAndDosage A String with the medication and the dosage separated by a colon (<code>:</code>).
-     * @return a MedicationDTO or null
-     * @throws NullPointerException if <code>medicationNameAndDosage</code> is null
+     * @param nameAndDosage A String with the medication and the dosage separated by a colon (<code>:</code>).
+     * @throws NullPointerException if <code>nameAndDosage</code> is null
      */
-    public static MedicationDTO from(String medicationNameAndDosage) {
-        Objects.requireNonNull(medicationNameAndDosage);
-        String[] nameAndDosage = StringUtils.split(medicationNameAndDosage, MEDICATION_DOSAGE_SEPARATOR);
+    public MedicationDTO(String nameAndDosage) {
+        Objects.requireNonNull(nameAndDosage);
 
-        MedicationDTO medicationDTO = new MedicationDTO();
-        if (nameAndDosage != null) {
-            medicationDTO.name   = nameAndDosage[0];
+        // TODO: Extract to method: the code to split
+        String[] nameAndDosageParts = StringUtils.split(nameAndDosage, MEDICATION_DOSAGE_SEPARATOR);
 
-            if (nameAndDosage.length == 2) {
-                medicationDTO.dosage = nameAndDosage[1];
+        if (nameAndDosageParts != null) {
+            name = nameAndDosageParts[0];
+
+            if (nameAndDosageParts.length == 2) {
+                dosage = nameAndDosageParts[1];
             } else {
-                medicationDTO.dosage = "";
+                dosage = "";
             }
         }
-
-        return medicationDTO;
     }
 }

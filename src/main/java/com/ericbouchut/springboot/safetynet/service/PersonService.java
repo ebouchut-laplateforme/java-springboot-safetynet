@@ -2,35 +2,36 @@ package com.ericbouchut.springboot.safetynet.service;
 
 import com.ericbouchut.springboot.safetynet.dto.PersonInfoDTO;
 import com.ericbouchut.springboot.safetynet.model.FireStation;
+import com.ericbouchut.springboot.safetynet.model.MedicalRecord;
 import com.ericbouchut.springboot.safetynet.model.Person;
 import com.ericbouchut.springboot.safetynet.repository.FireStationRepository;
+import com.ericbouchut.springboot.safetynet.repository.MedicalRecordRepository;
 import com.ericbouchut.springboot.safetynet.repository.PersonRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 
 @Service
 public class PersonService {
     private final PersonRepository personRepository;
     private final FireStationRepository fireStationRepository;
-    private final Clock clock;
+    private final MedicalRecordRepository medicalRecordRepository;
 
     public PersonService(
             PersonRepository personRepository,
             FireStationRepository fireStationRepository,
-            Clock clock
+            MedicalRecordRepository medicalRecordRepository
     ) {
         this.personRepository = personRepository;
         this.fireStationRepository = fireStationRepository;
-        this.clock = clock;
+        this.medicalRecordRepository = medicalRecordRepository;
     }
 
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~
     //  CRUD methods
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -74,12 +75,37 @@ public class PersonService {
                 .stream()
                 .filter(p -> fireStationAddresses.contains(p.getAddress()))
                 .map(Person::getPhone)
-                .distinct()
+                // The Stream now only contains phone numbers
+                // i.e., each person has benn replaced with their phone numbers
+                .distinct() // Remove duplicate phone numbers
                 .toList();
     }
 
+    /**
+     * Search for persons with a given first nad last names,
+     * then for each person found,
+     * return a list of {@link PersonInfoDTO}:
+     * a mix of their personal information
+     * and medical history (medications + allergies).
+     *
+     * This function returns a list because  several persons can
+     * have the same (first and last) name (namesake).
+     *
+     * @param firstName the first name
+     * @param lastName the last name
+     * @return a list with the PersonInfoDTO of each person found
+     */
     public List<PersonInfoDTO> getPersonInfo(String firstName, String lastName) {
-        return Collections.emptyList();
-    }
+        Set<Person> persons = personRepository.getPersonsByFirstNameAndLastName(firstName, lastName);
 
+        Map<Person, List<MedicalRecord>> medicalRecords = medicalRecordRepository.getMedicalRecordsByPersons(persons);
+        return medicalRecords
+                .entrySet()
+                .stream()
+                .map( entry ->
+                    new PersonInfoDTO(entry.getKey(), entry.getValue())
+//                    new PersonInfoDTO(person, medicalRecords)
+                )
+                .toList();
+    }
 }
