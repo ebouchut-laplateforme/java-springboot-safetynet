@@ -1,32 +1,18 @@
 package com.ericbouchut.springboot.safetynet.dto;
 
-import com.ericbouchut.springboot.safetynet.model.MedicalRecord;
-import lombok.Data;
-import org.springframework.util.ObjectUtils;
-
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 /**
- * Medical history (medications, dosage, allergies) of a resident (<code>Person</code>).
+ * Medical history (of a person) Data Transfer Object.
+ * <br/>
+ * This is a <b>response</b> DTO,
+ * meaning it is not intended to be deserialized.
+ *
+ * @see com.ericbouchut.springboot.safetynet.mapper.MedicalHistoryMapper
+ * @see MedicationDTO
  */
-@Data
-public class MedicalHistoryDTO {
-    List<MedicationDTO> medications;
-    Set<String> allergies;
-
-    public MedicalHistoryDTO() {
-        medications = Collections.emptyList();
-        allergies = Collections.emptySet();
-    }
-
-    public MedicalHistoryDTO(MedicalRecord medicalRecord) {
-        medications = medicalRecord.getMedications()
-                .stream()
-                .filter(medication -> !ObjectUtils.isEmpty(medication))
-                //.map(m -> new MedicationDTO(m))
-                .map(MedicationDTO::new)
-                .toList();
-
-        allergies = medicalRecord.getAllergies();
-    }
-}
+public record MedicalHistoryDTO (
+    List<MedicationDTO> medications,
+    Set<String> allergies
+) {}

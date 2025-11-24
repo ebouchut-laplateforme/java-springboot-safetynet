@@ -1,6 +1,7 @@
 package com.ericbouchut.springboot.safetynet.service;
 
 import com.ericbouchut.springboot.safetynet.dto.PersonInfoDTO;
+import com.ericbouchut.springboot.safetynet.mapper.PersonInfoMapper;
 import com.ericbouchut.springboot.safetynet.model.FireStation;
 import com.ericbouchut.springboot.safetynet.model.MedicalRecord;
 import com.ericbouchut.springboot.safetynet.model.Person;
@@ -20,15 +21,18 @@ public class PersonService {
     private final PersonRepository personRepository;
     private final FireStationRepository fireStationRepository;
     private final MedicalRecordRepository medicalRecordRepository;
+    private final PersonInfoMapper personInfoMapper;
 
     public PersonService(
             PersonRepository personRepository,
             FireStationRepository fireStationRepository,
-            MedicalRecordRepository medicalRecordRepository
+            MedicalRecordRepository medicalRecordRepository,
+            PersonInfoMapper personInfoMapper
     ) {
         this.personRepository = personRepository;
         this.fireStationRepository = fireStationRepository;
         this.medicalRecordRepository = medicalRecordRepository;
+        this.personInfoMapper = personInfoMapper;
     }
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -82,7 +86,7 @@ public class PersonService {
     }
 
     /**
-     * Search for persons with a given first nad last names,
+     * Search for persons with a given first and last names,
      * then for each person found,
      * return a list of {@link PersonInfoDTO}:
      * a mix of their personal information
@@ -103,9 +107,8 @@ public class PersonService {
                 .entrySet()
                 .stream()
                 .map( entry ->
-                    new PersonInfoDTO(entry.getKey(), entry.getValue())
-//                    new PersonInfoDTO(person, medicalRecords)
-                )
-                .toList();
+                        // Key: person, Value: List<MedicalRecord>
+                        personInfoMapper.toDTO(entry.getKey(), entry.getValue())
+                ).toList();
     }
 }
