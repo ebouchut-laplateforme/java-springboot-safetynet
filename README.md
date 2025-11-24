@@ -112,9 +112,9 @@ When your application reads the data file containing names and addresses,
 - `http://localhost:8080/firestation?stationNumber=<station_number>`
   This URL must return a list of people covered by the corresponding fire station.
   So, if the station number is `1`, it should return the residents covered by station number 1. 
-- The list should include the following specific information: first name, last name, address, phone number.  
-- In addition, it should provide a breakdown of the number of adults and the number of children (any individual aged 18 or
-  under) in the area served.
+  - The list should include the following specific information: first name, last name, address, phone number.  
+  - In addition, it should provide a breakdown of the number of adults and the number of children (any individual aged 18 or
+    under) in the area served.
 - `http://localhost:8080/childAlert?address=<address>`  
   This URL must return a list of children (any individual aged 18 or under) living at this address.
   The list must include each child's first name and last name, their age and a list of other
