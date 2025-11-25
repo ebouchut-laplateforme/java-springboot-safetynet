@@ -53,10 +53,10 @@ and metrics are functional.
 - [ ] **Maven** is functional:
     - [ ] Maven **runs unit tests** 
     - [ ] Maven **runs code coverage**.
-- [ } All URL endpoints and all additional features are covered
+- [ ] All URL endpoints and all additional features are covered
 by **unit tests**.
 - [ ] Compilation generates a **Surefire test report on** JUnit **test results**.
-- [ ] The build includes a **JaCoCo coverage report¨ and achieves **80% code coverage**.
+- [ ] The build includes a **JaCoCo coverage report** and achieves **80% code coverage**.
 
 
 ## Architecture
@@ -72,6 +72,8 @@ The code base adheres to **SOLID principles**:
 
 
 ## REST Endpoints
+
+### CUD Endpoints
 
 - http://localhost:8080/person  
   This endpoint will allow you to perform the following actions via `POST`/`PUT`/`DELETE` HTTP requests:  
@@ -99,7 +101,9 @@ The code base adheres to **SOLID principles**:
     (use a combination of first and last name as a unique identifier).
 
 
-## Generated Files
+## Custom Finders Endpoints
+
+These endpoints will add the missing `R` in CRUD.
 
 *SafetyNet Alerts* must have endpoints that provide information about their status.  
 When your application reads the data file containing names and addresses, 
@@ -108,9 +112,9 @@ When your application reads the data file containing names and addresses,
 - `http://localhost:8080/firestation?stationNumber=<station_number>`
   This URL must return a list of people covered by the corresponding fire station.
   So, if the station number is `1`, it should return the residents covered by station number 1. 
-- The list should include the following specific information: first name, last name, address, phone number.  
-- In addition, it should provide a breakdown of the number of adults and the number of children (any individual aged 18 or
-  under) in the area served.
+  - The list should include the following specific information: first name, last name, address, phone number.  
+  - In addition, it should provide a breakdown of the number of adults and the number of children (any individual aged 18 or
+    under) in the area served.
 - `http://localhost:8080/childAlert?address=<address>`  
   This URL must return a list of children (any individual aged 18 or under) living at this address.
   The list must include each child's first name and last name, their age and a list of other
