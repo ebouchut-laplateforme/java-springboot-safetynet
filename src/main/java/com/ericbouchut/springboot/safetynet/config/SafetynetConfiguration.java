@@ -48,7 +48,7 @@ public class SafetynetConfiguration {
      * containing the data of the Safety Net altering application.
      * That is read and parse the JSON file,to instantiate the corresponding "entities"
      * (<code>Data</code>, <code>Person</code>, <code>FireStation</code>, <code>MedicalResord</code>.
-     * The path of the JSON file can be configured in <code>application.properties</code>
+     * The path of the JSON file can be configured in <code>application.yml</code>
      * with the <code>app.data.file</code> property.
      * The default value is <code>classpath:data/data.json</code>
      * which means that by default the JSON file is <code>resources/data/data.json</code>.

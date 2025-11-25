@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: java-springboot-safetynet
+
+# Where to read the JSON input data from
+app:
+  data:
+    file: classpath:data/data.json
+
+logging:
+  level:
+    org.springframework: DEBUG
