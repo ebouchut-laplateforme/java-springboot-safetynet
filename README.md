@@ -138,3 +138,17 @@ When your application reads the data file containing names and addresses,
   all appear.
 - `http://localhost:8080/communityEmail?city=<city>`  
   This URL should return the email addresses of all residents of the city.
+
+## Remarks
+
+This project uses [Java Streams](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/package-summary.html) quite a bit!
+
+> Once you discover a hammer, everything looks like a nail.
+
+
+## Authors
+
+- **Eric Bouchut**:
+  - LinkedIn: https://linkedin.com/in/ebouchut
+  - GitHub: https://github.com/ebouchut
+  - Blog: https://EricBouchut.com
