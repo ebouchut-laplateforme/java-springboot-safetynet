@@ -2,10 +2,10 @@ package com.ericbouchut.springboot.safetynet.model;
 
 import com.ericbouchut.springboot.safetynet.data.DataLoader;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,12 +24,15 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Data {
+    @NotBlank
     Set<Person> persons;
 
     @JsonProperty("firestations") // Custom JSON field name
+    @NotBlank
     Set<FireStation> fireStations;
 
     @JsonProperty("medicalrecords") // Custom JSON field name
+    @NotBlank
     Set<MedicalRecord> medicalRecords;
 
     /**

@@ -4,6 +4,7 @@ import com.ericbouchut.springboot.safetynet.dto.ChildAlertDTO;
 import com.ericbouchut.springboot.safetynet.dto.PersonInfoDTO;
 import com.ericbouchut.springboot.safetynet.model.Person;
 import com.ericbouchut.springboot.safetynet.service.PersonService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +39,11 @@ public class PersonController {
      */
     // TODO: Should return a HTTP status Code
     @PostMapping("/person")
-    public void createPerson(@RequestBody Person person) {
+    public void createPerson(
+            @Valid
+            @RequestBody
+            Person person
+    ) {
         personService.createPerson(person);
     }
 
@@ -50,7 +55,11 @@ public class PersonController {
      * @return a response with status Code 200 (Ok) if the person has been removed or 404 (Not Found) if it dopes not exist or the removal failed.
      */
     @DeleteMapping("/person")
-    public ResponseEntity<Void> deletePerson(@RequestBody Person person) {
+    public ResponseEntity<Void> deletePerson(
+            @Valid
+            @RequestBody
+            Person person
+    ) {
         if (personService.deletePerson(person)) {
             return ResponseEntity.ok().build();
         }

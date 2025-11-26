@@ -1,6 +1,8 @@
 package com.ericbouchut.springboot.safetynet.model;
 
 import com.ericbouchut.springboot.safetynet.data.DataLoader;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,21 +35,29 @@ import java.util.Objects;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Person {
     @EqualsAndHashCode.Include
+    @NotBlank
     private String firstName;
 
     @EqualsAndHashCode.Include
+    @NotBlank
     private String lastName;
 
     @EqualsAndHashCode.Include
+    @NotBlank
     private String address;
 
     @EqualsAndHashCode.Include
+    @NotBlank
     private String city;
 
     @EqualsAndHashCode.Include
+    @NotBlank
     private String zip;
 
     private String phone;
+
+    @Email
+    @NotBlank
     private String email;
 
     /**
