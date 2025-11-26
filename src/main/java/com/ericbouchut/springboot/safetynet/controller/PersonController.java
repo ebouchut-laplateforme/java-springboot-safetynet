@@ -1,5 +1,6 @@
 package com.ericbouchut.springboot.safetynet.controller;
 
+import com.ericbouchut.springboot.safetynet.dto.ChildAlertDTO;
 import com.ericbouchut.springboot.safetynet.dto.PersonInfoDTO;
 import com.ericbouchut.springboot.safetynet.model.Person;
 import com.ericbouchut.springboot.safetynet.service.PersonService;
@@ -86,9 +87,11 @@ public class PersonController {
     }
 
     /**
+     * Handles <code>GET /personInfo?firstName=FIRST_NAME&lastName=LAST_NAME</code>
+     * requests.
      * If several people have the same (last?) name, they must all appear.
      *
-     * @return the name, address, age, email, and medical history (medications, dosage, allergies) of each resident.
+     * @return a list of {@link PersonInfoDTO} each with the name, address, age, email, and medical history (medications, dosage, allergies) of each resident.
      */
     @GetMapping("/personInfo")
     public List<PersonInfoDTO> getPersonInfo(
@@ -97,4 +100,25 @@ public class PersonController {
     ) {
         return personService.getPersonInfo(firstName, lastName);
     }
-}
+
+    /**
+     * Create the custom finder REST endpoint to handle
+     * <code>GET /childAlert?address=ADDRESS_HERE</code> requests
+     * The response is a JSON with the list of children (age <= 18)
+     * living at this address.
+     * Each list entry contains a child's description:
+     * <lu>
+     *     <li>first name</li>
+     *     <li>last name</li>
+     *     <li>age</li>
+     *     <li>list of other household members</li>
+     * </lu>
+     * If there are no children, this URL may return an empty List.
+     * @return a list of children (any individual aged 18 or under) living at this address.
+     */
+    // TODO: Add zip and city to distinguish children with same fist and last names living in different places
+    @GetMapping("/childAlert")
+    public List<ChildAlertDTO> getChildAlerts(@RequestParam String address) {
+        return personService.getChildAlerts(address);
+    }
+ }

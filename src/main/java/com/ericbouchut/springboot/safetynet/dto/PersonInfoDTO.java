@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @param address
  * @param age                  serialized byt not deserialized.
  * @param email
- * @param medicalHistory       a {@link MedicalHistoryDTO}
+ * @param medicalHistoryDTO       a {@link MedicalHistoryDTO}
  */
 public record PersonInfoDTO(
         // Serialized as the JSON property name
@@ -35,6 +35,6 @@ public record PersonInfoDTO(
 
         String email,
 
-        @JsonProperty("medical_history") // Use custom JSON property name for serialization
+        @JsonProperty("medicalHistory") // Use custom JSON property name for serialization
         MedicalHistoryDTO medicalHistoryDTO
 ) { }

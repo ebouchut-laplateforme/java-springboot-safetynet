@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 /**
  * The detailed information about a person that SafetyNet can send alerts to.
  * Instances of this class deserialized (read and instantiated) from a JSON file.
@@ -47,4 +49,15 @@ public class Person {
 
     private String phone;
     private String email;
+
+    /**
+     * Test if a person has a given full name (first and last name)
+     * @param firstName
+     * @param lastName
+     * @return true if this Person has the passed in full name (same firstName
+     */
+    public boolean hasFullName(String firstName, String lastName) {
+        return Objects.equals(this.firstName, firstName)
+                && Objects.equals(this.lastName, lastName);
+    }
 }

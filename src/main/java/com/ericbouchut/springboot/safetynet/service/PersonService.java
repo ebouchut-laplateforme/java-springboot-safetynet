@@ -1,6 +1,8 @@
 package com.ericbouchut.springboot.safetynet.service;
 
+import com.ericbouchut.springboot.safetynet.dto.ChildAlertDTO;
 import com.ericbouchut.springboot.safetynet.dto.PersonInfoDTO;
+import com.ericbouchut.springboot.safetynet.mapper.ChildAlertMapper;
 import com.ericbouchut.springboot.safetynet.mapper.PersonInfoMapper;
 import com.ericbouchut.springboot.safetynet.model.FireStation;
 import com.ericbouchut.springboot.safetynet.model.MedicalRecord;
@@ -22,17 +24,20 @@ public class PersonService {
     private final FireStationRepository fireStationRepository;
     private final MedicalRecordRepository medicalRecordRepository;
     private final PersonInfoMapper personInfoMapper;
+    private final ChildAlertMapper childAlertMapper;
 
     public PersonService(
             PersonRepository personRepository,
             FireStationRepository fireStationRepository,
             MedicalRecordRepository medicalRecordRepository,
-            PersonInfoMapper personInfoMapper
+            PersonInfoMapper personInfoMapper,
+            ChildAlertMapper childAlertMapper
     ) {
         this.personRepository = personRepository;
         this.fireStationRepository = fireStationRepository;
         this.medicalRecordRepository = medicalRecordRepository;
         this.personInfoMapper = personInfoMapper;
+        this.childAlertMapper = childAlertMapper;
     }
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -60,7 +65,7 @@ public class PersonService {
     }
 
     /**
-     * Return a unmodifiable <code>List</code> (not a <code>Set</code>) of phone numbers,
+     * Return an unmodifiable <code>List</code> (not a <code>Set</code>) of phone numbers,
      * because several persons can share the same phone number.
      * We can have duplicate phone numbers.
      * <br/>
@@ -90,9 +95,9 @@ public class PersonService {
      * then for each person found,
      * return a list of {@link PersonInfoDTO}:
      * a mix of their personal information
-     * and medical history (medications + allergies).
-     *
-     * This function returns a list because  several persons can
+     * and medical history (medications and allergies).
+     * <br/>
+     * This function returns a list because several persons can
      * have the same (first and last) name (namesake).
      *
      * @param firstName the first name
@@ -110,5 +115,41 @@ public class PersonService {
                         // Key: person, Value: List<MedicalRecord>
                         personInfoMapper.toDTO(entry.getKey(), entry.getValue())
                 ).toList();
+    }
+
+    /**
+     * Return a JSON with a list of children (age <= 18) living at this address.
+     * Each list entry contains the children's first name, last name, age and a list of other household members.
+     *
+     * @param address used to search for children living at this address
+     * @return a <code>List</code> of {@link ChildAlertDTO} or an empty List if there are no children at this address
+     */
+    public List<ChildAlertDTO> getChildAlerts(String address) {
+        // People living at this address
+        Set<Person> householdMembers = personRepository.getPersonsByAddress(address);
+
+        Map<Person, List<MedicalRecord>> medicalRecordsByHouseholdMember = medicalRecordRepository.getMedicalRecordsByPersons(householdMembers);
+
+        List<MedicalRecord> householdMedicalRecords = medicalRecordsByHouseholdMember
+                .values()
+                .stream()
+                // Convert Stream<List<MedicalRecord>> into Stream<MedicalRecord>
+                .flatMap(List::stream)
+                .toList();
+
+        List<ChildAlertDTO> childAlertsDTO = householdMedicalRecords.stream()
+                // Keep only children medical records in the Stream (remove adults' medical records)
+                .filter(MedicalRecord::isChildren)
+                .map( childMedicalRecord -> {
+                        // Build the household members excluding this child
+                        List<Person> otherHouseHoldMembers = householdMembers.stream()
+                                .filter(p -> !p.hasFullName(childMedicalRecord.getFirstName(), childMedicalRecord.getLastName()))
+                                .toList();
+
+                        return childAlertMapper.toDTO(childMedicalRecord, otherHouseHoldMembers);
+                })
+                .toList();
+
+        return childAlertsDTO;
     }
 }
