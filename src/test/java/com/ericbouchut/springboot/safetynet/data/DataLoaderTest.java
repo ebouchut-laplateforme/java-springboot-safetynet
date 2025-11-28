@@ -36,9 +36,14 @@ public class DataLoaderTest {
 
         assertNotNull(data.getPersons());
         assertEquals(23, data.getPersons().size());
-
+        // "firestations" contains 13 entries
+        // including this duplicate:
+        //      {
+        //            "address": "748 Townings Dr",
+        //            "station": "3"
+        //        }
         assertNotNull(data.getFireStations());
-        assertEquals(13, data.getFireStations().size());
+        assertEquals(12, data.getFireStations().size());
 
         assertNotNull(data.getMedicalRecords());
         assertEquals(23, data.getMedicalRecords().size());
