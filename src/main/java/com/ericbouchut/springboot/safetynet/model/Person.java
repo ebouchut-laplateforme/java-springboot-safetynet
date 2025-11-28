@@ -3,10 +3,8 @@ package com.ericbouchut.springboot.safetynet.model;
 import com.ericbouchut.springboot.safetynet.data.DataLoader;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
+import lombok.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
@@ -32,6 +30,7 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder // Why both @Builder and constructors? To learn...
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Person {
     @EqualsAndHashCode.Include
