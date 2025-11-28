@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class FireStationRepository {
@@ -41,14 +42,13 @@ public class FireStationRepository {
 
     /**
      * @param fireStationNumber a (station) number shared by one or more fire stations
-     * @return the addresses of fire stations that share the same number
+     * @return the addresses of fire stations that share the same number (no duplicate)
      */
-    public Set<String> getFireStationAddresses(Integer fireStationNumber) {
+    public Set<String> getFireStationAddressesByNumber(Integer fireStationNumber) {
         return data.getFireStations()
                 .stream()
                 .filter(fireStation -> fireStation.getNumber().equals(fireStationNumber))
                 .map(FireStation::getAddress)
-                .distinct()
                 .collect(Collectors.toSet());
     }
 }

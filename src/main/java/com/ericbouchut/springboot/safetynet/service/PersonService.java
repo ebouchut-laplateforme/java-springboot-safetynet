@@ -1,6 +1,7 @@
 package com.ericbouchut.springboot.safetynet.service;
 
 import com.ericbouchut.springboot.safetynet.dto.ChildAlertDTO;
+import com.ericbouchut.springboot.safetynet.dto.FloodDTO;
 import com.ericbouchut.springboot.safetynet.dto.PersonInfoDTO;
 import com.ericbouchut.springboot.safetynet.mapper.ChildAlertMapper;
 import com.ericbouchut.springboot.safetynet.mapper.PersonInfoMapper;
@@ -151,5 +152,10 @@ public class PersonService {
                 .toList();
 
         return childAlertsDTO;
+    }
+
+    public List<FloodDTO> getFloodDTO(List<Integer> fireStationNumbers) {
+        // TODO: Do it
+        return null;
     }
 }

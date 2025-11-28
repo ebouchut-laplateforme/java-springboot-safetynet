@@ -4,10 +4,9 @@ import com.ericbouchut.springboot.safetynet.model.Data;
 import com.ericbouchut.springboot.safetynet.model.Person;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class PersonRepository {
@@ -32,6 +31,7 @@ public class PersonRepository {
     public boolean deletePerson(Person person) {
         return data.getPersons().remove(person);
     }
+
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //  Custom Finder Methods
@@ -59,6 +59,19 @@ public class PersonRepository {
         return data.getPersons()
                 .stream()
                 .filter(p -> p.getAddress() != null && p.getAddress().equals(address))
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     * Return all the persons living at one of the passed-in addresses.
+     *
+     * @param addresses the addresses
+     * @return the persons living at one of the passed addresses
+     */
+    public Set<Person> getPersonsByAddresses(Collection<String> addresses) {
+        return data.getPersons()
+                .stream()
+                .filter(p -> addresses.contains(p.getAddress()))
                 .collect(Collectors.toSet());
     }
 

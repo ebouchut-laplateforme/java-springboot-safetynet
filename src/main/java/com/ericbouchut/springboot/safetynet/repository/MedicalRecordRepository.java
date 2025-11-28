@@ -40,6 +40,23 @@ public class MedicalRecordRepository {
     }
 
     /**
+     * IMPORTANT: We can have homonyms with a different address,
+     * that is several persons with the same first and last names
+     * but with a different address (that is where the tuple (address, zip code, city) is different.
+     *
+     * @param firstName
+     * @param lastName
+     * @return the medical records of personS with the given first and last names
+     */
+    public List<MedicalRecord> getMedicalRecordsByFistNameAndLastName(String firstName, String lastName) {
+        return data.getMedicalRecords()
+                .stream()
+                .filter(m -> m.getLastName().equals(lastName)
+                        && m.getFirstName().equals(firstName))
+                .toList();
+    }
+
+    /**
      * @param persons list of people whose medical records we want to retrieve and associate.
      * @return a Map with (key, value) pairs, where the key is a <code>Person</code> and the value is this person's list of medical records.
      */

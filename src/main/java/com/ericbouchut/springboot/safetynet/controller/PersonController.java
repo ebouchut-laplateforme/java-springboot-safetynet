@@ -1,6 +1,7 @@
 package com.ericbouchut.springboot.safetynet.controller;
 
 import com.ericbouchut.springboot.safetynet.dto.ChildAlertDTO;
+import com.ericbouchut.springboot.safetynet.dto.FloodDTO;
 import com.ericbouchut.springboot.safetynet.dto.PersonInfoDTO;
 import com.ericbouchut.springboot.safetynet.model.Person;
 import com.ericbouchut.springboot.safetynet.service.PersonService;
@@ -129,5 +130,25 @@ public class PersonController {
     @GetMapping("/childAlert")
     public List<ChildAlertDTO> getChildAlerts(@RequestParam String address) {
         return personService.getChildAlerts(address);
+    }
+
+    /**
+     * This REST endpoint handles requests such as <code>GET /flood/stations?stations=2,3</code>
+     * and responds with a {@link FloodDTO} serialized as JSON.
+     * The response contains a list of all households served by the fire station
+     * grouped addresses.
+     * Each household member should include the name, phone number
+     * and age of the residents,
+     * and list their medical history (medications, dosage and allergies)
+     * next to each name.
+     *
+     * @param fireStationNumbers List of fire station numbers
+     * @return the list of all households served by the fire station.
+     *
+     * See {@link FloodDTO} for the content of the expected response
+     */
+    @GetMapping("/flood/stations")
+    public List<FloodDTO> getFloodDTO(@RequestParam List<Integer> fireStationNumbers) {
+        return personService.getFloodDTO(fireStationNumbers);
     }
  }
