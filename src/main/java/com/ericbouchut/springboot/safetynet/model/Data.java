@@ -2,9 +2,12 @@ package com.ericbouchut.springboot.safetynet.model;
 
 import com.ericbouchut.springboot.safetynet.data.DataLoader;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.Optional;
 import java.util.Set;
@@ -23,17 +26,18 @@ import java.util.Set;
 @lombok.Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Validated
 public class Data {
-    @NotBlank
-    Set<Person> persons;
+    @NotEmpty
+    Set<@Valid Person> persons;
 
     @JsonProperty("firestations") // Custom JSON field name
-    @NotBlank
-    Set<FireStation> fireStations;
+    @NotEmpty
+    Set<@Valid FireStation> fireStations;
 
     @JsonProperty("medicalrecords") // Custom JSON field name
-    @NotBlank
-    Set<MedicalRecord> medicalRecords;
+    @NotEmpty
+    Set<@Valid MedicalRecord> medicalRecords;
 
     /**
      * Search a Person by its full name (firstName + lastName).

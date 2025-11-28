@@ -5,10 +5,12 @@ import com.ericbouchut.springboot.safetynet.util.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -28,13 +30,13 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Validated
 public class MedicalRecord {
     @NotBlank
     private String firstName;
 
     @NotBlank
     private String lastName;
-
     /**
      * The date of birth mapped to the <code>birthdate</code> JSON property
      * when deserialized (read from JSON) (and serialized (saved to JSON),
@@ -49,14 +51,14 @@ public class MedicalRecord {
      * @see com.ericbouchut.springboot.safetynet.config.SafetynetConfiguration#data(DataLoader)
      */
     // TODO: REST API v2 should take into account the timezone and use ZonedDate instead of LocalDate
-    @JsonFormat(pattern = "MM/dd/yyyy") // "month(2 digits)/dayOfMonth(2 digits)/year(4 digits)"
     @JsonProperty("birthdate") // Custom JSON field name
+    @JsonFormat(pattern = "MM/dd/yyyy") // "month(2 digits)/dayOfMonth(2 digits)/year(4 digits)"
     @NotBlank
     @Past  // must be a past date
     private LocalDate dateOfBirth;
 
-    private Set<String> medications;
-    private Set<String> allergies;
+    private Set<@NotEmpty String> medications;
+    private Set<@NotEmpty String> allergies;
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~
     // Helper instance methods

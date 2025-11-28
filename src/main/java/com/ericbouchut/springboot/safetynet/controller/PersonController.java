@@ -6,13 +6,18 @@ import com.ericbouchut.springboot.safetynet.dto.PersonInfoDTO;
 import com.ericbouchut.springboot.safetynet.model.Person;
 import com.ericbouchut.springboot.safetynet.service.PersonService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
 
 @RestController
+@Validated
 public class PersonController {
 
     private final PersonService personService;
@@ -27,6 +32,7 @@ public class PersonController {
 
     /**
      * List all the persons.
+     *
      * @return all the persons (no duplicate)
      */
     @GetMapping("/person/")
@@ -36,13 +42,14 @@ public class PersonController {
 
     /**
      * Create a person
+     *
      * @param person the person to create
      */
     // TODO: Should return a HTTP status Code
     @PostMapping("/person")
     public void createPerson(
-            @Valid
             @RequestBody
+            @Valid  // Validates the JSON Body
             Person person
     ) {
         personService.createPerson(person);
@@ -57,8 +64,8 @@ public class PersonController {
      */
     @DeleteMapping("/person")
     public ResponseEntity<Void> deletePerson(
-            @Valid
             @RequestBody
+            @Valid
             Person person
     ) {
         if (personService.deletePerson(person)) {
@@ -79,7 +86,10 @@ public class PersonController {
      */
     @GetMapping("/communityEmail")
     public List<String> getCityEmails(
-            @RequestParam("city") String city) {
+            @RequestParam
+            @NotEmpty  // Requires @Validated on the class
+            String city
+    ) {
         return personService.getCityEmails(city);
     }
 
@@ -91,7 +101,9 @@ public class PersonController {
      */
     @GetMapping("/phoneAlert")
     public List<String> getPhoneNumbersByFireStation(
-            @RequestParam("firestation") Integer fireStationNumber
+            @RequestParam("firestation")
+            @Positive
+            Integer fireStationNumber
     ) {
         return personService.getPhoneNumbersByFireStation(fireStationNumber);
     }
@@ -105,8 +117,13 @@ public class PersonController {
      */
     @GetMapping("/personInfo")
     public List<PersonInfoDTO> getPersonInfo(
-            @RequestParam String firstName,
-            @RequestParam String lastName
+            @RequestParam
+            @NotBlank
+            String firstName,
+
+            @RequestParam
+            @NotBlank
+            String lastName
     ) {
         return personService.getPersonInfo(firstName, lastName);
     }
@@ -118,17 +135,22 @@ public class PersonController {
      * living at this address.
      * Each list entry contains a child's description:
      * <lu>
-     *     <li>first name</li>
-     *     <li>last name</li>
-     *     <li>age</li>
-     *     <li>list of other household members</li>
+     * <li>first name</li>
+     * <li>last name</li>
+     * <li>age</li>
+     * <li>list of other household members</li>
      * </lu>
      * If there are no children, this URL may return an empty List.
+     *
      * @return a list of children (any individual aged 18 or under) living at this address.
      */
     // TODO: Add zip and city to distinguish children with same fist and last names living in different places
     @GetMapping("/childAlert")
-    public List<ChildAlertDTO> getChildAlerts(@RequestParam String address) {
+    public List<ChildAlertDTO> getChildAlerts(
+            @RequestParam
+            @NotBlank
+            String address
+    ) {
         return personService.getChildAlerts(address);
     }
 
@@ -136,7 +158,7 @@ public class PersonController {
      * This REST endpoint handles requests such as <code>GET /flood/stations?stations=2,3</code>
      * and responds with a {@link FloodDTO} serialized as JSON.
      * The response contains a list of all households served by the fire station
-     * grouped addresses.
+     * grouped by address.
      * Each household member should include the name, phone number
      * and age of the residents,
      * and list their medical history (medications, dosage and allergies)
@@ -144,11 +166,15 @@ public class PersonController {
      *
      * @param fireStationNumbers List of fire station numbers
      * @return the list of all households served by the fire station.
-     *
+     * <p>
      * See {@link FloodDTO} for the content of the expected response
      */
     @GetMapping("/flood/stations")
-    public List<FloodDTO> getFloodDTO(@RequestParam List<Integer> fireStationNumbers) {
+    public List<FloodDTO> getFloodDTO(
+            @RequestParam("stations")
+            @NotBlank
+            List<@Positive Integer> fireStationNumbers
+    ) {
         return personService.getFloodDTO(fireStationNumbers);
     }
- }
+}

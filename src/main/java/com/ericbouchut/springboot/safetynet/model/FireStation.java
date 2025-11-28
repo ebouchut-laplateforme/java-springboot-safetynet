@@ -2,6 +2,8 @@ package com.ericbouchut.springboot.safetynet.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,6 +30,7 @@ public class FireStation {
      * Several fire stations can share the same number.
      */
     @JsonProperty("station")
-    @NotBlank
+    @NotNull
+    @Positive
     private Integer number;
 }
