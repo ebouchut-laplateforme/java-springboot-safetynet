@@ -24,13 +24,13 @@ import java.time.Clock;
 public class SafetynetConfiguration {
 
     /**
-     * ObjectMapper cannot deserialize dates by default.
+     * <code>ObjectMapper</code> cannot deserialize dates by default.
      * When deserializing <code>LocalDate</code> from JSON
-     * we get this error:
-     * Java 8 date/time type `java.time.LocalDate` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling
+     * We get this error:
+     * <br/>
+     * <blockquote>Java 8 date/time type `java.time.LocalDate` not supported by default: add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" to enable handling</blockquote>
      * <p>
-     * This class workarounds this issue
-     * by activating the <code>JavaTimeModule</code> module.
+     * Activating the <code>JavaTimeModule</code> module fixes this issue.
      *
      * @see <a href="https://stackoverflow.com/a/74188917">...</a>
      * Posted by Toni, modified by community. See post 'Timeline' for change history
