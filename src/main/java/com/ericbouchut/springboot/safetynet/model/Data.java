@@ -38,24 +38,4 @@ public class Data {
     @JsonProperty("medicalrecords") // Custom JSON field name
     @NotEmpty
     Set<@Valid MedicalRecord> medicalRecords;
-
-    /**
-     * Search a Person by its full name (firstName + lastName).
-     * The unicity of a Personis solely based on these 2 fields
-     *
-     * @param firstName
-     * @param lastName
-     * @return maybe a Person
-     *
-     * @see Person#hashCode()
-     */
-    public Optional<Person> getPersonByFirstNameAndLastName(String firstName, String lastName) {
-        Person searchedPerson = new Person();
-        searchedPerson.setFirstName(firstName);
-        searchedPerson.setLastName(lastName);
-
-        return persons.stream()
-                .filter(p -> p.equals(searchedPerson))
-                .findFirst();
-    }
 }
