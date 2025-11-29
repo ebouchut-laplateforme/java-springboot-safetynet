@@ -109,6 +109,20 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
+                <configuration>
+                    <excludes>
+                        <!-- Application entry points -->
+                        <exclude>**/Application.class</exclude>
+                        <exclude>**/*Application.class</exclude>
+
+                        <!-- Exceptions -->
+                        <exclude>**/exception/**/*</exclude>
+
+                        <!-- DTOs -->
+                        <exclude>**/dto/**/*</exclude>
+                        <exclude>**/*DTO.class</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
