@@ -63,7 +63,7 @@ public class Person {
      * Test if a person has a given full name (first and last name)
      * @param firstName
      * @param lastName
-     * @return true if this Person has the passed in full name (same firstName
+     * @return true if this Person has the passed in full name (same first and last names)
      */
     public boolean hasFullName(String firstName, String lastName) {
         return Objects.equals(this.firstName, firstName)
