@@ -4,7 +4,7 @@ import com.ericbouchut.springboot.safetynet.dto.MedicalHistoryDTO;
 import com.ericbouchut.springboot.safetynet.dto.PersonInfoDTO;
 import com.ericbouchut.springboot.safetynet.model.MedicalRecord;
 import com.ericbouchut.springboot.safetynet.model.Person;
-import com.ericbouchut.springboot.safetynet.util.DateUtils;
+import com.ericbouchut.springboot.safetynet.service.DateService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
@@ -18,8 +18,10 @@ import java.util.Optional;
 @Component
 public class PersonInfoMapper {
     private final MedicalHistoryMapper medicalHistoryMapper;
+    private final DateService dateService;
 
-    public PersonInfoMapper(MedicalHistoryMapper medicalHistoryMapper) {
+    public PersonInfoMapper(DateService dateService, MedicalHistoryMapper medicalHistoryMapper) {
+        this.dateService = dateService;
         this.medicalHistoryMapper = medicalHistoryMapper;
     }
 
@@ -34,7 +36,7 @@ public class PersonInfoMapper {
                 .findFirst();
 
         int age = maybeFirstMedicalRecord
-                .map(m -> DateUtils.calculateAge(m.getDateOfBirth()))
+                .map(m -> dateService.calculateAge(m.getDateOfBirth()))
                 .orElse(-1);
 
         MedicalHistoryDTO medicalHistoryDTO = maybeFirstMedicalRecord

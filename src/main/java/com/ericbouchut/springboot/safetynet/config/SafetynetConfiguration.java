@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.Clock;
+import java.time.LocalDate;
+import java.time.Period;
 
 /**
  * This class contains instance methods annotated with <code>@Bean</code>
@@ -61,6 +63,14 @@ public class SafetynetConfiguration {
     @Bean
     public Data data(DataLoader dataLoader) {
         return dataLoader.load();
+    }
+
+    /**
+     * Return the system default Clock.
+     */
+    @Bean
+    public Clock clock() {
+        return Clock.systemDefaultZone();
     }
 }
 

@@ -16,11 +16,21 @@ import java.util.stream.Collectors;
 
 @Service
 public class FireStationService {
+    private final DateService dateService;
+
     private final FireStationRepository fireStationRepository;
     private final PersonRepository personRepository;
     private final MedicalRecordRepository medicalRecordRepository;
 
-    public FireStationService(FireStationRepository fireStationRepository, PersonRepository personRepository, MedicalRecordRepository medicalRecordRepository) {
+    public FireStationService(
+            DateService dateService,
+
+            FireStationRepository fireStationRepository,
+            PersonRepository personRepository,
+            MedicalRecordRepository medicalRecordRepository
+    ) {
+        this.dateService = dateService;
+
         this.fireStationRepository = fireStationRepository;
         this.personRepository = personRepository;
         this.medicalRecordRepository = medicalRecordRepository;
@@ -65,7 +75,7 @@ public class FireStationService {
                 // Key = true  => Value = count of children's medical records
                 // Key = false => Value = count of adults     medical records
                 Collectors.partitioningBy(
-                        MedicalRecord::isChildren, // true (children), false (adult)
+                        m -> dateService.isChildren(m.getDateOfBirth()), // true (children), false (adult)
                         Collectors.counting()      // count of the corresponding medical records
                 )
             );

@@ -21,22 +21,31 @@ import java.util.stream.Collectors;
 
 @Service
 public class PersonService {
+    private final DateService dateService;
+
     private final PersonRepository personRepository;
     private final FireStationRepository fireStationRepository;
     private final MedicalRecordRepository medicalRecordRepository;
+
     private final PersonInfoMapper personInfoMapper;
     private final ChildAlertMapper childAlertMapper;
 
     public PersonService(
+            DateService dateService,
+
             PersonRepository personRepository,
             FireStationRepository fireStationRepository,
             MedicalRecordRepository medicalRecordRepository,
+
             PersonInfoMapper personInfoMapper,
             ChildAlertMapper childAlertMapper
     ) {
+        this.dateService = dateService;
+
         this.personRepository = personRepository;
         this.fireStationRepository = fireStationRepository;
         this.medicalRecordRepository = medicalRecordRepository;
+
         this.personInfoMapper = personInfoMapper;
         this.childAlertMapper = childAlertMapper;
     }
@@ -140,7 +149,7 @@ public class PersonService {
 
         List<ChildAlertDTO> childAlertsDTO = householdMedicalRecords.stream()
                 // Keep only children medical records in the Stream (remove adults' medical records)
-                .filter(MedicalRecord::isChildren)
+                .filter(m -> dateService.isChildren(m.getDateOfBirth()))
                 .map( childMedicalRecord -> {
                         // Build the household members excluding this child
                         List<Person> otherHouseHoldMembers = householdMembers.stream()

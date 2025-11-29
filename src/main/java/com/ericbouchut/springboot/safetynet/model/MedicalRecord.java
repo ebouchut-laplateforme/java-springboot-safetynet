@@ -1,7 +1,6 @@
 package com.ericbouchut.springboot.safetynet.model;
 
 import com.ericbouchut.springboot.safetynet.data.DataLoader;
-import com.ericbouchut.springboot.safetynet.util.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
@@ -59,22 +58,4 @@ public class MedicalRecord {
 
     private Set<@NotEmpty String> medications;
     private Set<@NotEmpty String> allergies;
-
-    // ~~~~~~~~~~~~~~~~~~~~~~~~
-    // Helper instance methods
-    // ~~~~~~~~~~~~~~~~~~~~~~~~
-
-    /**
-     * @return the age calculated live from the {@link #dateOfBirth}.
-     */
-    public int age() {
-        return DateUtils.calculateAge(getDateOfBirth());
-    }
-
-    /**
-     * @return a boolean, <code>true</code> if the person is 18 years old or less
-     */
-    public boolean isChildren() {
-        return age() <= 18;
-    }
 }
