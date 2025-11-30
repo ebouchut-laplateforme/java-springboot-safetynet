@@ -35,7 +35,7 @@ public class PersonController {
      *
      * @return all the persons (no duplicate)
      */
-    @GetMapping("/person/")
+    @GetMapping("/person")
     public Set<Person> getAllPersons() {
         return personService.getAllPersons();
     }
