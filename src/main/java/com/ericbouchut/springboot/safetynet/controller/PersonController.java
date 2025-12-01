@@ -9,11 +9,15 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -45,14 +49,24 @@ public class PersonController {
      *
      * @param person the person to create
      */
-    // TODO: Should return a HTTP status Code
     @PostMapping("/person")
-    public void createPerson(
+    public ResponseEntity<Person> createPerson(
             @RequestBody
             @Valid  // Validates the JSON Body
             Person person
     ) {
-        personService.createPerson(person);
+        Optional<Person> personCreated = personService.createPerson(person);
+
+        // If created successfully returns HTTP Status code 201, and the person JSONified as the body
+        // Otherwise returns HTTP Status code 409 conflict if not created because this person already exists (namesake)
+        return personCreated
+                .map(p -> ResponseEntity
+                    .status(HttpStatus.CREATED) // HTTP Status Code 201 (Created)
+                    .body(p)
+                ).orElseGet( () -> ResponseEntity
+                    .status(HttpStatus.CONFLICT) // HTTP Status Code 409 (Conflict)
+                    .build()
+                );
     }
 
     /**

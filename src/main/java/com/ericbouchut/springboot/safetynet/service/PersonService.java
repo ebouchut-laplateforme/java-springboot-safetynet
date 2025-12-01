@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,8 +59,13 @@ public class PersonService {
         return personRepository.getAllPersons();
     }
 
-    public void createPerson(Person person) {
-        personRepository.createPerson(person);
+    /**
+     *
+     * @param person the person you want to create
+     * @return maybe a <code>Person</code> if created otherwise an empty Person
+     */
+    public Optional<Person> createPerson(Person person) {
+        return personRepository.createPerson(person);
     }
 
     public boolean deletePerson(Person person) {

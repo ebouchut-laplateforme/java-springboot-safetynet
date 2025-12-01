@@ -24,14 +24,22 @@ public class PersonRepository {
         return data.getPersons();
     }
 
-    public void createPerson(Person person) {
-        data.getPersons().add(person);
+    /**
+     * Create a person and return the person created.
+     *
+     * @param person the person to add
+     * @return an Optional person, or empty if the person already exists
+     */
+    public Optional<Person> createPerson(Person person) {
+        if (data.getPersons().add(person)) {
+            return Optional.of(person);
+        }
+        return Optional.empty();
     }
 
     public boolean deletePerson(Person person) {
         return data.getPersons().remove(person);
     }
-
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //  Custom Finder Methods
