@@ -42,4 +42,22 @@ class DateServiceTest {
         );
         assertEquals(101, dateService.calculateAge(dateOfBirth));
     }
+
+    @Test
+    public void isChildrenTest() {
+        // Fix the current date returned by LocalDate.now() to: 2025-12-01
+        DateService dateService = new DateService(
+                Clock.fixed(
+                        Instant.parse("2025-12-01T00:00:00Z"),
+                        ZoneId.systemDefault()
+                )
+        );
+        LocalDate dateOfBirthChildren = LocalDate.of(2007, 12, 1);
+        LocalDate dateOfBirthAdult1   = LocalDate.of(2006, 11, 30);
+        LocalDate dateOfBirthAdult2   = LocalDate.of(2006, 12, 1);
+
+        assertTrue(dateService.isChildren(dateOfBirthChildren));
+        assertFalse(dateService.isChildren(dateOfBirthAdult1));
+        assertFalse(dateService.isChildren(dateOfBirthAdult2));
+    }
 }
